@@ -21,10 +21,13 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: 8.4 # 强制使用稳定的 8.4 版本，避免系统默认的 9.3 开发版
+        gradle-version: 8.5 # 升级到 8.5 以更好地配合 AGP 8.2.2
 
     - name: Build with Gradle
-      run: gradle assembleDebug # 直接使用 gradle 命令，setup-gradle 会确保这是 8.4 版本
+      run: |
+        # 强制修复潜在的路径权限问题
+        chmod +x gradlew || true
+        gradle assembleDebug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
